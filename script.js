@@ -21,6 +21,7 @@ for (let i = 1; i <= 60; i++) {
     hizbsContainer.appendChild(button);
 }
 
+// Select Hizb and store selection in Firebase
 function selectHizb(hizbNumber, button) {
     db.collection('selectedHizbs').doc(`hizb${hizbNumber}`).get().then(doc => {
         if (!doc.exists) {
@@ -33,6 +34,7 @@ function selectHizb(hizbNumber, button) {
     });
 }
 
+// Display selected Hizb
 function displaySelectedHizb(hizbNumber) {
     const selectedHizbsList = document.getElementById('selected-hizbs-list');
     const listItem = document.createElement('li');
