@@ -4,58 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ramadan Community Project</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="scripts.js"></script>
-    <!-- Add Firebase SDK -->
-    <script defer src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fffaf0;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .section {
+            margin: 50px auto;
+            padding: 40px;
+            max-width: 800px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #b8860b;
+        }
+        .hizb-btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            background: #b8860b;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .hizb-btn:hover, .selected {
+            background: gold;
+            transform: scale(1.1);
+        }
+        .disabled {
+            background: grey !important;
+            cursor: not-allowed;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
-    <!-- Hero Section -->
-    <section id="hero">
-        <div class="container">
-            <h1>Welcome to the Ramadan Community Project</h1>
-            <p>Join us in a collective Qur'an recitation this Ramadan.</p>
-        </div>
-    </section>
+    <div class="section fade-in">
+        <h1>Welcome to the Ramadan Community Project</h1>
+        <p>Join us in completing the Qur'an together, one Hizb at a time.</p>
+    </div>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works">
-        <div class="container">
-            <h2>How It Works</h2>
-            <p>Users select a Hizb to recite.</p>
-            <p>The collective goal is to complete the entire Qur'an.</p>
-            <p>Once all 60 Hizbs are completed, the cycle restarts.</p>
-        </div>
-    </section>
+    <div class="section fade-in">
+        <h2>Select Your Hizb</h2>
+        <div id="hizb-container"></div>
+        <p id="selected-hizbs">Selected Hizbs: None</p>
+    </div>
 
-    <!-- Why Join Section -->
-    <section id="why-join">
-        <div class="container">
-            <h2>Why Join</h2>
-            <div class="benefits">
-                <div class="benefit">Spiritual Growth</div>
-                <div class="benefit">Sense of Accomplishment</div>
-                <div class="benefit">Community Connection</div>
-                <div class="benefit">A Meaningful Ramadan</div>
-            </div>
-        </div>
-    </section>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database().ref("selectedHizbs");
+        let selectedHizbs = [];
 
-    <!-- Hizb Selection Section -->
-    <section id="hizb-selection">
-        <div class="container">
-            <h2>Select a Hizb</h2>
-            <div class="hizbs">
-                <!-- Buttons for 60 Hizbs will be generated here by JavaScript -->
-            </div>
-            <div class="selected-hizbs">
-                <h3>Selected Hizbs:</h3>
-                <ul id="selected-hizbs-list">
-                    <!-- Selected Hizbs will be displayed here -->
-                </ul>
-            </div>
-        </div>
-    </section>
+        function loadHizbs() {
+            let container = document.getElementById('hizb-container');
+            for (let i = 1; i <= 60; i++) {
+                let btn = document.createElement("button");
+                btn.innerText = "Hizb " + i;
+                btn.classList.add("hizb-btn");
+                btn.onclick = () => selectHizb(i, btn);
+                container.appendChild(btn);
+            }
+
+            db.on("value", (snapshot) => {
+                let takenHizbs = snapshot.val() || {};
+                document.querySelectorAll(".hizb-btn").forEach(btn => {
+                    let hizbNum = parseInt(btn.innerText.split(" ")[1]);
+                    if (takenHizbs[hizbNum]) {
+                        btn.classList.add("disabled");
+                        btn.disabled = true;
+                    }
+                });
+            });
+        }
+
+        function selectHizb(hizb, btn) {
+            db.child(hizb).once("value", (snapshot) => {
+                if (!snapshot.exists()) {
+                    db.child(hizb).set(true);
+                    selectedHizbs.push(hizb);
+                    document.getElementById('selected-hizbs').innerText = "Selected Hizbs: " + selectedHizbs.join(", ");
+                    btn.classList.add("disabled");
+                    btn.disabled = true;
+                }
+            });
+        }
+
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScrollAnimations);
+        document.addEventListener("DOMContentLoaded", handleScrollAnimations);
+
+        loadHizbs();
+    </script>
 </body>
 </html>
