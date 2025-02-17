@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadan Community Project</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+     <!-- Firebase SDK -->
+     <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyBMtxNHg_TLxV2-BrB14O66SmybPuVt8B0",
+          authDomain: "ramadanhizbproject-35942.firebaseapp.com",
+          projectId: "ramadanhizbproject-35942",
+          storageBucket: "ramadanhizbproject-35942.appspot.com",
+          messagingSenderId: "1013861517674",
+          appId: "1:1013861517674:web:fec09cfcd9e7f92b797d13"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        // Function to handle Hizb selection
+        async function updateProgressBar() {
+            const querySnapshot = await getDocs(collection(db, "hizbSelections"));
+            let selectedCount = querySnapshot.size;
+            let percentage = (selectedCount / 60) * 100;
+            document.getElementById("progress-bar").style.width = percentage + "%";
+            document.getElementById("progress-bar").innerText = Math.round(percentage) + "%";
+        }
+
+        async function selectHizb(hizbNumber) {
+            const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
+            const hizbSnap = await getDoc(hizbRef);
+
+            if (hizbSnap.exists()) {
+                alert(`Hizb ${hizbNumber} has already been taken!`);
+                return;
+            }
+
+            // Mark the Hizb as selected in Firebase
+            await setDoc(hizbRef, { selected: true });
+
+            // Update UI
+            const button = document.querySelector(`button[data-hizb="${hizbNumber}"]`);
+            button.classList.add("selected");
+            button.innerText = `Hizb ${hizbNumber} `;
+
+            updateProgressBar();
+
+            // Show selected Hizb
+            let selectedHizbItem = document.createElement("p");
+            selectedHizbItem.innerText = `You selected Hizb ${hizbNumber}`;
+            document.getElementById("selected-hizbs").appendChild(selectedHizbItem);
+        }
+
+        // Generate Hizb Buttons Dynamically
+        document.addEventListener("DOMContentLoaded", async function() {
+            const hizbGrid = document.querySelector(".hizb-grid");
+
+            for (let i = 1; i <= 60; i++) {
+                let button = document.createElement("button");
+                button.innerText = `Hizb ${i}`;
+                button.setAttribute("data-hizb", i);
+                button.addEventListener("click", () => selectHizb(i));
+                hizbGrid.appendChild(button);
+            }
+
+            updateProgressBar();
+
+            // Load already selected Hizbs
+            const querySnapshot = await getDocs(collection(db, "selectedHizbs"));
+            querySnapshot.forEach((doc) => {
+                const hizbNumber = doc.id.replace("hizb", "");
+                const button = document.querySelector(`button[data-hizb="${hizbNumber}"]`);
+                if (button) {
+                    button.classList.add("selected");
+                    button.innerText = `Hizb ${hizbNumber} ✅`;
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content">
+            <h1 class="fade-in">Welcome to the Ramadan Community Project</h1>
+            <p class="fade-in">Join us in completing the Qur'an collectively this Ramadan. By participating, you become part of a global movement of unity and devotion, enhancing your spiritual connection while helping others stay motivated on this sacred journey.</p>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="how-box slide-in">
+            <h2>Select a Hizb</h2>
+            <p>Choose any available Hizb from the list below to participate in the collective recitation.</p>
+        </div>
+        <div class="how-box slide-in">
+            <h2>Recite Your Hizb</h2>
+            <p>Once selected, recite the Hizb on your own time, ensuring accuracy and sincerity.</p>
+        </div>
+        <div class="how-box slide-in">
+            <h2>Track Progress</h2>
+            <p>As more people participate, the progress tracker updates, showing how much has been completed.</p>
+        </div>
+    </section>    
+
+    <!-- Why Join Section -->
+    <section id="why-join">
+        <h2>Why Join?</h2>
+        <div class="benefits">
+            <div class="benefit-box slide-in"><strong>Spiritual Growth</strong><br> Strengthen your connection with the Qur'an and deepen your faith during this holy month.</div>
+            <div class="benefit-box slide-in"><strong>Sense of Accomplishment</strong><br> Experience the fulfillment of contributing to a collective goal that has a profound impact.</div>
+            <div class="benefit-box slide-in"><strong>Community Connection</strong><br> Be part of a supportive global community that encourages and uplifts each other in faith.</div>
+            <div class="benefit-box slide-in"><strong>A Meaningful Ramadan</strong><br> Elevate your Ramadan experience by actively engaging in a noble cause that brings people together.</div>
+        </div>
+    </section>
+
+    <!-- Hizb Selection Section -->
+    <section id="hizb-selection">
+        <h2>Select a Hizb</h2>
+        <p>Choose one of the 60 Hizbs below to recite. Your selection will be saved to ensure that each part of the Qur'an is covered. Let’s work together to complete the entire Qur'an and make this Ramadan truly special.</p>
+        <div class="hizb-grid">
+        </div>        
+        <div id="progress-tracker">Progress made:</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar">0%</div>
+        </div>
+    </section>
+
+</body>
+</html>
+
+
