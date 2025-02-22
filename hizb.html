@@ -11,12 +11,6 @@
         <h1>Hizb Selection</h1>
     </header>
 
-    <div class="container">
-        <h2 id="hizb-title">Loading...</h2>
-        <p id="hizb-range">Loading...</p>
-        <div id="hizb-text" class="hizb-content">Loading...</div>
-    </div>
-
     <div id="quran-text-container">
         <h2 id="hizb-title"></h2>
         <p id="quran-text"></p>
@@ -55,25 +49,45 @@
             return;
         }
     
-        // Fetch the JSON file
-        const response = await fetch("hizbs.json");
-        const hizbData = await response.json();
+        // Show loading text
+        document.getElementById("quran-text").innerText = "Loading...";
     
-        // Find the selected Hizb
-        const selectedHizb = hizbData.hizbs.find(hizb => hizb.id == hizbId);
+        try {
+            // Fetch the hizb.json file
+            const response = await fetch("hizbs.json");
+            const hizbData = await response.json();
     
-        if (!selectedHizb) {
-            document.getElementById("quran-text").innerText = "Invalid Hizb.";
-            return;
+            // Find the selected Hizb
+            const selectedHizb = hizbData.hizbs.find(hizb => hizb.id == hizbId);
+    
+            if (!selectedHizb) {
+                document.getElementById("quran-text").innerText = "Invalid Hizb.";
+                return;
+            }
+    
+            // Extract start and end positions
+            const { start, end } = selectedHizb;
+            let ayahs = [];
+    
+            // Fetch each ayah from start to end
+            for (let surah = start.surah; surah <= end.surah; surah++) {
+                for (let ayah = (surah === start.surah ? start.ayah : 1); ayah <= (surah === end.surah ? end.ayah : 286); ayah++) {
+                    const quranResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}`);
+                    const quranData = await quranResponse.json();
+                    
+                    if (quranData.data) {
+                        ayahs.push(quranData.data.text);
+                    }
+                }
+            }
+    
+            // Display the text
+            document.getElementById("hizb-title").innerText = `Hizb ${hizbId}`;
+            document.getElementById("quran-text").innerHTML = ayahs.join(" ");
+        } catch (error) {
+            console.error("Error fetching Quranic text:", error);
+            document.getElementById("quran-text").innerText = "Failed to load Quranic text.";
         }
-    
-        // Fetch Quranic text from API
-        const quranResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${selectedHizb.start.surah}:${selectedHizb.start.ayah}-${selectedHizb.end.surah}:${selectedHizb.end.ayah}`);
-        const quranData = await quranResponse.json();
-    
-        // Display the text
-        document.getElementById("hizb-title").innerText = `Hizb ${hizbId}`;
-        document.getElementById("quran-text").innerText = quranData.data.text;
     });
     </script>
 
