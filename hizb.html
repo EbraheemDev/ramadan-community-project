@@ -17,7 +17,7 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", async function() {
+    document.addEventListener("DOMContentLoaded", async function() {
         const urlParams = new URLSearchParams(window.location.search);
         const hizbId = urlParams.get("hizb");
     
@@ -26,15 +26,14 @@
             return;
         }
     
-        // Show loading text
         document.getElementById("quran-text").innerText = "Loading...";
     
         try {
-            // Fetch the hizb.json file
+            // Load the pre-written text from hizbs.json
             const response = await fetch("hizbs.json");
             const hizbData = await response.json();
     
-            // Find the selected Hizb
+            // Find the correct Hizb
             const selectedHizb = hizbData.hizbs.find(hizb => hizb.id == hizbId);
     
             if (!selectedHizb) {
@@ -42,28 +41,12 @@
                 return;
             }
     
-            // Extract start and end positions
-            const { start, end } = selectedHizb;
-            let ayahs = [];
-    
-            // Fetch each ayah from start to end using Quran.com API
-            for (let surah = start.surah; surah <= end.surah; surah++) {
-                for (let ayah = (surah === start.surah ? start.ayah : 1); ayah <= (surah === end.surah ? end.ayah : 286); ayah++) {
-                    const quranResponse = await fetch(`https://api.quran.com/api/v4/quran/verses/uthmani?verse_key=${surah}:${ayah}`);
-                    const quranData = await quranResponse.json();
-    
-                    if (quranData.verses && quranData.verses.length > 0) {
-                        ayahs.push(quranData.verses[0].text);
-                    }
-                }
-            }
-    
-            // Display the text
+            // Display the Quranic text
             document.getElementById("hizb-title").innerText = `Hizb ${hizbId}`;
-            document.getElementById("quran-text").innerHTML = ayahs.join(" ");
+            document.getElementById("quran-text").innerHTML = selectedHizb.text;
     
         } catch (error) {
-            console.error("Error fetching Quranic text:", error);
+            console.error("Error loading Quranic text:", error);
             document.getElementById("quran-text").innerText = "Failed to load Quranic text.";
         }
     });
