@@ -17,6 +17,11 @@
         <div id="hizb-text" class="hizb-content">Loading...</div>
     </div>
 
+    <div id="quran-text-container">
+        <h2 id="hizb-title"></h2>
+        <p id="quran-text"></p>
+    </div>
+
     <script>
         // Get the Hizb ID from the URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -39,5 +44,38 @@
             })
             .catch(error => console.error('Error loading Hizb data:', error));
     </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", async function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hizbId = urlParams.get("hizb");
+    
+        if (!hizbId) {
+            document.getElementById("quran-text").innerText = "No Hizb selected.";
+            return;
+        }
+    
+        // Fetch the JSON file
+        const response = await fetch("hizbs.json");
+        const hizbData = await response.json();
+    
+        // Find the selected Hizb
+        const selectedHizb = hizbData.hizbs.find(hizb => hizb.id == hizbId);
+    
+        if (!selectedHizb) {
+            document.getElementById("quran-text").innerText = "Invalid Hizb.";
+            return;
+        }
+    
+        // Fetch Quranic text from API
+        const quranResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${selectedHizb.start.surah}:${selectedHizb.start.ayah}-${selectedHizb.end.surah}:${selectedHizb.end.ayah}`);
+        const quranData = await quranResponse.json();
+    
+        // Display the text
+        document.getElementById("hizb-title").innerText = `Hizb ${hizbId}`;
+        document.getElementById("quran-text").innerText = quranData.data.text;
+    });
+    </script>
+
 </body>
 </html>
