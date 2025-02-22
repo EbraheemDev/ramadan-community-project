@@ -1,0 +1,16 @@
+{
+  "hizbs": [
+    {
+      "id": 1,
+      "start": { "surah": "Al-Fatiha", "ayah": 1 },
+      "end": { "surah": "Al-Baqarah", "ayah": 74 },
+      "text": "Qur'anic text for Hizb 1..."
+    },
+    {
+      "id": 2,
+      "start": { "surah": "Al-Baqarah", "ayah": 75 },
+      "end": { "surah": "Al-Baqarah", "ayah": 141 },
+      "text": "Qur'anic text for Hizb 2..."
+    }
+  ]
+}
