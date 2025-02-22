@@ -2,15 +2,18 @@
   "hizbs": [
     {
       "id": 1,
-      "start": { "surah": "Al-Fatiha", "ayah": 1 },
-      "end": { "surah": "Al-Baqarah", "ayah": 74 },
-      "text": "Qur'anic text for Hizb 1..."
+      "start": { "surah": 1, "ayah": 1 },
+      "end": { "surah": 2, "ayah": 74 }
     },
     {
       "id": 2,
-      "start": { "surah": "Al-Baqarah", "ayah": 75 },
-      "end": { "surah": "Al-Baqarah", "ayah": 141 },
-      "text": "Qur'anic text for Hizb 2..."
+      "start": { "surah": 2, "ayah": 75 },
+      "end": { "surah": 2, "ayah": 141 }
+    },
+    {
+      "id": 3,
+      "start": { "surah": 2, "ayah": 142 },
+      "end": { "surah": 2, "ayah": 202 }
     }
   ]
 }
