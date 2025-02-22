@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hizb Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="hizb-title">Hizb Details</h1>
+    <p id="hizb-text">Loading...</p>
+
+    <script>
+        // Get the Hizb number from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const hizbId = urlParams.get("hizb");
+
+        // Fetch the Hizb data from the JSON file
+        fetch("hizbData.json") // Make sure this file is in the repo
+            .then(response => response.json())
+            .then(data => {
+                const hizb = data.hizbs.find(h => h.id == hizbId);
+                if (hizb) {
+                    document.getElementById("hizb-title").textContent = `Hizb ${hizb.id}`;
+                    document.getElementById("hizb-text").textContent = hizb.text;
+                } else {
+                    document.getElementById("hizb-text").textContent = "Hizb not found.";
+                }
+            })
+            .catch(error => console.error("Error loading Hizb data:", error));
+    </script>
+</body>
+</html>
