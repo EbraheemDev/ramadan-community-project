@@ -70,7 +70,9 @@
                 let button = document.createElement("button");
                 button.innerText = `Hizb ${i}`;
                 button.setAttribute("data-hizb", i);
-                button.addEventListener("click", () => selectHizb(i));
+                button.addEventListener("click", () => {
+                    window.location.href = `hizb.html?hizb=${i}`;
+                });
                 hizbGrid.appendChild(button);
             }
 
