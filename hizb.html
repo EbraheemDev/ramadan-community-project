@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hizb Details</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1 id="hizb-title">Hizb Details</h1>
-    <p id="hizb-text">Loading...</p>
+    <header>
+        <h1>Hizb Selection</h1>
+    </header>
+
+    <div class="container">
+        <h2 id="hizb-title">Loading...</h2>
+        <p id="hizb-range">Loading...</p>
+        <div id="hizb-text" class="hizb-content">Loading...</div>
+    </div>
 
     <script>
-        // Get the Hizb number from the URL
+        // Get the Hizb ID from the URL
         const urlParams = new URLSearchParams(window.location.search);
-        const hizbId = urlParams.get("hizb");
+        const hizbId = urlParams.get('hizb');
 
-        // Fetch the Hizb data from the JSON file
-        fetch("hizbData.json") // Make sure this file is in the repo
+        // Fetch Hizb data from the JSON file
+        fetch('hizbs.json')
             .then(response => response.json())
             .then(data => {
                 const hizb = data.hizbs.find(h => h.id == hizbId);
                 if (hizb) {
-                    document.getElementById("hizb-title").textContent = `Hizb ${hizb.id}`;
-                    document.getElementById("hizb-text").textContent = hizb.text;
+                    document.getElementById('hizb-title').innerText = `Hizb ${hizb.id}`;
+                    document.getElementById('hizb-range').innerText = `From: Surah ${hizb.start.surah}, Ayah ${hizb.start.ayah} — To: Surah ${hizb.end.surah}, Ayah ${hizb.end.ayah}`;
+                    document.getElementById('hizb-text').innerText = hizb.text;
                 } else {
-                    document.getElementById("hizb-text").textContent = "Hizb not found.";
+                    document.getElementById('hizb-title').innerText = "Hizb Not Found";
+                    document.getElementById('hizb-range').innerText = "";
+                    document.getElementById('hizb-text').innerText = "Invalid Hizb selection.";
                 }
             })
-            .catch(error => console.error("Error loading Hizb data:", error));
+            .catch(error => console.error('Error loading Hizb data:', error));
     </script>
 </body>
 </html>
