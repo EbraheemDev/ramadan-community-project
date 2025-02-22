@@ -3,17 +3,14 @@
     {
       "id": 1,
       "start": { "surah": 1, "ayah": 1 },
-      "end": { "surah": 2, "ayah": 74 }
+      "end": { "surah": 2, "ayah": 74 },
+      "text": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ... (full text here)"
     },
     {
       "id": 2,
       "start": { "surah": 2, "ayah": 75 },
-      "end": { "surah": 2, "ayah": 141 }
-    },
-    {
-      "id": 3,
-      "start": { "surah": 2, "ayah": 142 },
-      "end": { "surah": 2, "ayah": 202 }
+      "end": { "surah": 2, "ayah": 141 },
+      "text": "وَإِذَا لَقُوا الَّذِينَ آمَنُوا... (full text here)"
     }
   ]
 }
