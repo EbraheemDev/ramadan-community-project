@@ -43,11 +43,10 @@
             document.getElementById("hizb-title").innerText = `Hizb ${hizbId}`;
             document.getElementById("hizb-range").innerText = `From: Surah ${selectedHizb.start.surah}, Ayah ${selectedHizb.start.ayah} — To: Surah ${selectedHizb.end.surah}, Ayah ${selectedHizb.end.ayah}`;
     
-            const ayahs = selectedHizb.text.split("|") // Assuming each ayah is separated by '|'
-                .map(ayah => `<p class='ayah'>${ayah}</p>`) // Wrap each ayah in a <p>
-                .join("\n");
+            // Convert the array into HTML paragraphs
+            const ayahsHtml = selectedHizb.text.map(ayah => `<p class='ayah'>${ayah}</p>`).join("\n");
     
-            document.getElementById("quran-text-container").innerHTML = ayahs;
+            document.getElementById("quran-text-container").innerHTML = ayahsHtml;
     
         } catch (error) {
             console.error("Error loading Quranic text:", error);
@@ -55,5 +54,6 @@
         }
     });
     </script>
+    
 </body>
 </html>
