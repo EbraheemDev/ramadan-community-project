@@ -11,9 +11,10 @@
         <h1>Hizb Selection</h1>
     </header>
 
-    <div id="quran-text-container">
+    <div class="hizb-container">
         <h2 id="hizb-title"></h2>
-        <p id="quran-text"></p>
+        <p id="hizb-range"></p>
+        <div id="quran-text-container" class="quran-text"></div>
     </div>
 
     <script>
@@ -22,35 +23,37 @@
         const hizbId = urlParams.get("hizb");
     
         if (!hizbId) {
-            document.getElementById("quran-text").innerText = "No Hizb selected.";
+            document.getElementById("quran-text-container").innerText = "No Hizb selected.";
             return;
         }
     
-        document.getElementById("quran-text").innerText = "Loading...";
+        document.getElementById("quran-text-container").innerText = "Loading...";
     
         try {
-            // Load the pre-written text from hizbs.json
             const response = await fetch("hizbs.json");
             const hizbData = await response.json();
     
-            // Find the correct Hizb
             const selectedHizb = hizbData.hizbs.find(hizb => hizb.id == hizbId);
     
             if (!selectedHizb) {
-                document.getElementById("quran-text").innerText = "Invalid Hizb.";
+                document.getElementById("quran-text-container").innerText = "Invalid Hizb.";
                 return;
             }
     
-            // Display the Quranic text
             document.getElementById("hizb-title").innerText = `Hizb ${hizbId}`;
-            document.getElementById("quran-text").innerHTML = selectedHizb.text;
+            document.getElementById("hizb-range").innerText = `From: Surah ${selectedHizb.start.surah}, Ayah ${selectedHizb.start.ayah} — To: Surah ${selectedHizb.end.surah}, Ayah ${selectedHizb.end.ayah}`;
+    
+            const ayahs = selectedHizb.text.split("|") // Assuming each ayah is separated by '|'
+                .map(ayah => `<p class='ayah'>${ayah}</p>`) // Wrap each ayah in a <p>
+                .join("\n");
+    
+            document.getElementById("quran-text-container").innerHTML = ayahs;
     
         } catch (error) {
             console.error("Error loading Quranic text:", error);
-            document.getElementById("quran-text").innerText = "Failed to load Quranic text.";
+            document.getElementById("quran-text-container").innerText = "Failed to load Quranic text.";
         }
     });
     </script>
-
 </body>
 </html>
