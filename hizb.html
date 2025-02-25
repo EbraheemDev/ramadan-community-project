@@ -44,7 +44,7 @@
                 if (docSnap.exists()) {
                     let text = docSnap.data().text;
                 
-                    // Split text by Ayah numbers (assuming each Ayah starts with a number)
+                    // Split text by Ayah numbers (each Ayah starts with a number)
                     let ayahs = text.split(/(\d+)/).filter(s => s.trim() !== ""); 
                 
                     let hizbContainer = document.getElementById("hizb-text");
@@ -55,7 +55,7 @@
                             // Create a box for each Ayah
                             let ayahBox = document.createElement("div");
                             ayahBox.classList.add("ayah-box");
-                            ayahBox.innerText = ayah + " " + ayahs[index + 1]; // Add the number + text
+                            ayahBox.innerHTML = `<span class="ayah-number">${ayah}</span> ${ayahs[index + 1]}`;
                             hizbContainer.appendChild(ayahBox);
                         }
                     });
