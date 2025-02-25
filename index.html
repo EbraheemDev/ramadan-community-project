@@ -74,15 +74,15 @@
             updateProgressBar();
         
             // Mark already selected Hizbs
-            const querySnapshot = await getDocs(collection(db, "hizbtext"));
-            querySnapshot.forEach((doc) => {
-                const hizbNumber = doc.id.replace("hizb", "");
-                const button = document.querySelector(`button[data-hizb="${hizbNumber}"]`);
-                if (button) {
-                    button.classList.add("selected");
-                    button.innerText = `Hizb ${hizbNumber} ✅`;
-                }
-            });
+            //const querySnapshot = await getDocs(collection(db, "hizbtext"));
+            //querySnapshot.forEach((doc) => {
+                //const hizbNumber = doc.id.replace("hizb", "");
+                //const button = document.querySelector(`button[data-hizb="${hizbNumber}"]`);
+                //if (button) {
+                    //button.classList.add("selected");
+                    //button.innerText = `Hizb ${hizbNumber} ✅`;
+                //}
+            //});
         });
     </script>
 </head>
