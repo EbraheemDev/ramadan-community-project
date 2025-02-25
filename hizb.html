@@ -67,6 +67,54 @@
                 document.getElementById("hizb-text").innerText = "Error loading Hizb text.";
             }
         });
+        // Assuming Firebase is already initialized
+
+        // Function to select Hizb from the Qur'anic text page
+        function selectHizb(hizbNumber) {
+            const hizbRef = firebase.firestore().collection("selectedHizbs").doc(hizbNumber.toString());
+        
+            hizbRef.get().then((doc) => {
+                if (doc.exists) {
+                    alert("This Hizb has already been selected.");
+                } else {
+                    hizbRef.set({ selected: true })
+                        .then(() => {
+                            alert("Hizb successfully selected!");
+                            document.getElementById("selectHizbButton").disabled = true;
+                        })
+                        .catch(error => console.error("Error selecting Hizb: ", error));
+                }
+            });
+        }
+        
+        // HTML for the Qur'anic text page buttons
+        const buttonsContainer = document.createElement("div");
+        buttonsContainer.style.display = "flex";
+        buttonsContainer.style.justifyContent = "center";
+        buttonsContainer.style.gap = "10px";
+        buttonsContainer.style.marginTop = "20px";
+        
+        const backButton = document.createElement("button");
+        backButton.innerText = "Back to Home";
+        backButton.onclick = () => window.location.href = "index.html";
+        
+        const selectHizbButton = document.createElement("button");
+        selectHizbButton.innerText = "Select This Hizb";
+        selectHizbButton.id = "selectHizbButton";
+        selectHizbButton.onclick = () => selectHizb(currentHizbNumber);
+        
+        buttonsContainer.appendChild(backButton);
+        buttonsContainer.appendChild(selectHizbButton);
+        
+        document.body.appendChild(buttonsContainer);
+        
+        // Disable button if the Hizb is already selected
+        firebase.firestore().collection("selectedHizbs").doc(currentHizbNumber.toString()).get().then((doc) => {
+            if (doc.exists) {
+                selectHizbButton.disabled = true;
+            }
+        });
+
     </script>
 </head>
 <body>
