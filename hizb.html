@@ -42,7 +42,12 @@
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    document.getElementById("hizb-text").innerText = docSnap.data().text;
+                    let text = docSnap.data().text;
+                    
+                    // Ensure every new ayah (which starts with a number) is moved to a new line
+                    text = text.replace(/(\d+)/g, "\n$1"); 
+                
+                    document.getElementById("hizb-text").innerText = text;
                 } else {
                     document.getElementById("hizb-text").innerText = "Hizb text not found.";
                 }
