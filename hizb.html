@@ -43,11 +43,22 @@
 
                 if (docSnap.exists()) {
                     let text = docSnap.data().text;
-                    
-                    // Ensure every new ayah (which starts with a number) is moved to a new line
-                    text = text.replace(/(\d+)/g, "\n$1"); 
                 
-                    document.getElementById("hizb-text").innerText = text;
+                    // Split text by Ayah numbers (assuming each Ayah starts with a number)
+                    let ayahs = text.split(/(\d+)/).filter(s => s.trim() !== ""); 
+                
+                    let hizbContainer = document.getElementById("hizb-text");
+                    hizbContainer.innerHTML = ""; // Clear existing content
+                
+                    ayahs.forEach((ayah, index) => {
+                        if (!isNaN(ayah.trim())) {
+                            // Create a box for each Ayah
+                            let ayahBox = document.createElement("div");
+                            ayahBox.classList.add("ayah-box");
+                            ayahBox.innerText = ayah + " " + ayahs[index + 1]; // Add the number + text
+                            hizbContainer.appendChild(ayahBox);
+                        }
+                    });
                 } else {
                     document.getElementById("hizb-text").innerText = "Hizb text not found.";
                 }
