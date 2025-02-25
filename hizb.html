@@ -3,57 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hizb Details</title>
+    <title>Hizb Recitation</title>
     <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBMtxNHg_TLxV2-BrB14O66SmybPuVt8B0",
+            authDomain: "ramadanhizbproject-35942.firebaseapp.com",
+            projectId: "ramadanhizbproject-35942",
+            storageBucket: "ramadanhizbproject-35942.appspot.com",
+            messagingSenderId: "1013861517674",
+            appId: "1:1013861517674:web:fec09cfcd9e7f92b797d13"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            // Get Hizb number from URL
+            const params = new URLSearchParams(window.location.search);
+            const hizbNumber = params.get("hizb");
+
+            // Update title
+            document.getElementById("hizb-title").innerText = `Hizb ${hizbNumber}`;
+
+            // Fetch Qur'anic text from Firebase
+            const docRef = doc(db, "hizbtext", `hizb${hizbNumber}`);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                document.getElementById("hizb-text").innerText = docSnap.data().text;
+            } else {
+                document.getElementById("hizb-text").innerText = "Hizb text not found.";
+            }
+        });
+    </script>
 </head>
 <body>
-    <header>
-        <h1>Hizb Selection</h1>
-    </header>
 
-    <div class="hizb-container">
-        <h2 id="hizb-title"></h2>
-        <p id="hizb-range"></p>
-        <div id="quran-text-container" class="quran-text"></div>
-    </div>
+    <h1 id="hizb-title">Hizb</h1>
+    <p id="hizb-text">Loading...</p>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", async function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const hizbId = urlParams.get("hizb");
-    
-        if (!hizbId) {
-            document.getElementById("quran-text-container").innerText = "No Hizb selected.";
-            return;
-        }
-    
-        document.getElementById("quran-text-container").innerText = "Loading...";
-    
-        try {
-            const response = await fetch("hizbs.json");
-            const hizbData = await response.json();
-    
-            const selectedHizb = hizbData.hizbs.find(hizb => hizb.id == hizbId);
-    
-            if (!selectedHizb) {
-                document.getElementById("quran-text-container").innerText = "Invalid Hizb.";
-                return;
-            }
-    
-            document.getElementById("hizb-title").innerText = `Hizb ${hizbId}`;
-            document.getElementById("hizb-range").innerText = `From: Surah ${selectedHizb.start.surah}, Ayah ${selectedHizb.start.ayah} — To: Surah ${selectedHizb.end.surah}, Ayah ${selectedHizb.end.ayah}`;
-    
-            // Convert the array into HTML paragraphs
-            const ayahsHtml = selectedHizb.text.map(ayah => `<p class='ayah'>${ayah}</p>`).join("\n");
-    
-            document.getElementById("quran-text-container").innerHTML = ayahsHtml;
-    
-        } catch (error) {
-            console.error("Error loading Quranic text:", error);
-            document.getElementById("quran-text-container").innerText = "Failed to load Quranic text.";
-        }
-    });
-    </script>
-    
+    <a href="index.html">⬅ Back to Home</a>
+
 </body>
 </html>
