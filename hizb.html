@@ -131,7 +131,7 @@
         
         // Function to select Hizb from the Qur'anic text page
         function selectHizb(hizbNumber) {
-            const hizbRef = db.collection("selectedHizbs").doc(hizbNumber.toString());
+            const hizbRef = db.collection("hizbSelections").doc(hizbNumber.toString());
         
             hizbRef.get().then((doc) => {
                 if (doc.exists) {
