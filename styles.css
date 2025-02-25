@@ -1,11 +1,9 @@
-/* General Styles */
 body {
-    font-family: 'Noto Naskh Arabic', serif;
-    background: #fdfdfd;
-    color: #333;
-    text-align: center;
-    padding: 15px;
+    font-family: 'Great Vibes', cursive;
     margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #333;
 }
 
 section {
@@ -13,107 +11,333 @@ section {
     text-align: center;
 }
 
-/* Hero Section */
 #hero {
     background: linear-gradient(135deg, #d4af37, #c49b63);
     color: #fff;
-    padding: 100px 10%;
+    padding: 120px 10%;
     text-align: center;
     border-bottom-left-radius: 50% 20px;
     border-bottom-right-radius: 50% 20px;
 }
 
 .hero-content h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     font-family: 'Playfair Display', serif;
     animation: fadeIn 1.5s ease-in-out;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .hero-content p {
-    font-size: 1.3em;
+    font-size: 1.5em;
     animation: fadeIn 2s ease-in-out;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* How It Works Section */
-.how-it-works {
-    background: linear-gradient(135deg, #f8f4e1, #e6cf99);
-    padding: 40px 8%;
-    border-radius: 30px;
+.benefits, .how-it-works {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
 
-.how-box {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    transition: all 0.3s ease-in-out;
-    font-family: 'Lobster', cursive;
+.benefit-box, .how-box {
+    background-color: #f8f4e1;
+    color: #c49b63;
+    padding: 20px;
+    border-radius: 15px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s ease-in-out;
+}
+
+.benefit-box.slide-in, .how-box.slide-in {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.how-it-works {
+    background: linear-gradient(135deg, #f8f4e1, #e6cf99);
+    padding: 60px 10%;
+    border-radius: 50px;
 }
 
 .how-box:hover {
     background-color: #e6cf99;
     transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
 }
 
-/* Hizb Grid */
 .hizb-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 8px;
-    max-width: 600px;
+    gap: 10px;
+    max-width: 800px;
     margin: 20px auto;
     padding: 20px;
 }
 
 .hizb-grid button {
-    padding: 10px;
+    padding: 12px;
     background-color: #f3d1a1;
-    color: #fff;
+    color: rgb(255, 255, 255);
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s;
     font-family: 'Great Vibes', cursive;
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 .hizb-grid button:hover {
     background-color: #e6b71f;
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .hizb-grid button.selected {
     background-color: gold;
-    color: black;
+    color: rgb(0, 0, 0);
     font-weight: bold;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .hero-content h1 {
-        font-size: 2em;
-    }
+/* General Styles */
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+}
 
-    .hero-content p {
-        font-size: 1.2em;
-    }
+/* Hero Section */
+#hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+}
 
-    .hizb-grid {
-        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+/* How It Works Section */
+.how-box {
+    background: #fff;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Lobster', cursive;
+}
+.how-box:hover {
+    background: #f8d35a;
+    color: #222 !important;
+    font-weight: bold;
+}
+
+/* Why Join Section */
+.why-box h3 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    font-family: 'Lobster', cursive; /* Gives it a stylish, creative look */
+}
+
+/* Buttons */
+button {
+    font-family: 'Pacifico', cursive;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    padding: 10px 15px;
+    width: 100px;
+    background: white;
+    border: 2px solid brown;
+    box-shadow: none;
+}
+button:hover {
+    background: white;
+    border-color: #ffffff;
+    color: #fcfcfc;
+    transform: translateY(-3px);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+button:active {
+    background: #d4af37;
+    color: white;
+    border-color: #a67c00;
+    transform: scale(0.95);
+}
+
+/* Remove tick from selected Hizb buttons */
+button.selected {
+    background: #d4af37;
+    color: white;
+    border-color: #a67c00;
+}
+
+/* Hizb Grid */
+.hizb-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    justify-content: center;
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Hizb Selection Section */
+#hizb-selection p {
+    max-width: 500px;
+    margin: auto;
+    text-align: center;
+}
+
+/* Progress Tracker */
+#progress-tracker {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Progress Bar */
+.progress-container {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 600px;
+    margin: auto;
+    height: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #a67c00;
+    text-align: center;
+    color: white;
+    line-height: 20px;
+    font-weight: bold;
+    transition: width 0.5s ease-in-out;
+}
+
+/* General styling to match homepage */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f5eb;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Header styling */
+header {
+    background-color: #d4af37;
+    color: white;
+    padding: 15px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Hizb container styling */
+.hizb-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hizb title */
+#hizb-title {
+    font-size: 28px;
+    color: #b8860b;
+    margin-bottom: 10px;
+}
+
+/* Hizb range */
+#hizb-range {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Quranic text container */
+.quran-text {
+    text-align: right;
+    font-size: 20px;
+    line-height: 1.8;
+    direction: rtl; /* Arabic text is right-to-left */
+}
+
+/* Individual ayah styling */
+.ayah {
+    display: block;
+    background: #fffbe6;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Naskh+Arabic&display=swap');
+
+/* General Page Styles */
+body {
+    font-family: 'Noto Naskh Arabic', serif;
+    background: #fdfdfd;
+    color: #333;
+    text-align: center;
+    padding: 15px;
+}
+
+/* Hizb Container */
+#hizb-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 95%;
+    margin: 20px auto;
+}
+
+/* Individual Ayah Box */
+.ayah-box {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 12px;
+    margin: 8px 0;
+    width: 100%;
+    max-width: 500px;
+    text-align: right;
+    font-size: 20px;
+    line-height: 1.8;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
+}
+
+/* Highlight Ayah Number */
+.ayah-number {
+    color: #d4a017;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Mobile-Friendly Adjustments */
+@media (max-width: 600px) {
+    .ayah-box {
+        font-size: 18px;
+        padding: 15px;
+        line-height: 2;
     }
 }
 
-@media (max-width: 480px) {
-    .hero-content h1 {
-        font-size: 1.8em;
-    }
 
-    .hero-content p {
-        font-size: 1em;
-    }
 
-    .hizb-grid {
-        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-        gap: 6px;
-    }
-}
+
+
+
+
+
