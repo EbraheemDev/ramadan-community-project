@@ -299,12 +299,12 @@ h1 {
 }
 
 #hizb-text {
-    font-family: 'Noto Naskh Arabic', serif; /* Good Arabic font */
+    font-family: 'Noto Naskh Arabic', serif;
     font-size: 20px;
-    line-height: 2; /* Adds spacing between lines */
-    text-align: right; /* Aligns text to the right for better Arabic display */
-    direction: rtl; /* Ensures proper right-to-left text flow */
-    white-space: pre-line; /* Ensures each new ayah starts on a new line */
+    line-height: 2;
+    text-align: right;
+    direction: rtl;
+    white-space: pre-line; /* This ensures that line breaks appear */
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
