@@ -115,6 +115,67 @@
             }
         });
 
+        // Firebase SDK Initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyBMtxNHg_TLxV2-BrB14O66SmybPuVt8B0",
+            authDomain: "ramadanhizbproject-35942.firebaseapp.com",
+            projectId: "ramadanhizbproject-35942",
+            storageBucket: "ramadanhizbproject-35942.appspot.com",
+            messagingSenderId: "1013861517674",
+            appId: "1:1013861517674:web:fec09cfcd9e7f92b797d13"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // Function to select Hizb from the Qur'anic text page
+        function selectHizb(hizbNumber) {
+            const hizbRef = db.collection("selectedHizbs").doc(hizbNumber.toString());
+        
+            hizbRef.get().then((doc) => {
+                if (doc.exists) {
+                    alert("This Hizb has already been selected.");
+                } else {
+                    hizbRef.set({ selected: true })
+                        .then(() => {
+                            alert("Hizb successfully selected!");
+                            document.getElementById("selectHizbButton").disabled = true;
+                        })
+                        .catch(error => console.error("Error selecting Hizb: ", error));
+                }
+            });
+        }
+        
+        // HTML for the Qur'anic text page buttons
+        const buttonsContainer = document.createElement("div");
+        buttonsContainer.style.display = "flex";
+        buttonsContainer.style.justifyContent = "center";
+        buttonsContainer.style.gap = "10px";
+        buttonsContainer.style.marginTop = "20px";
+        
+        const backButton = document.createElement("button");
+        backButton.innerText = "Back to Home";
+        backButton.onclick = () => window.location.href = "index.html";
+        
+        const selectHizbButton = document.createElement("button");
+        selectHizbButton.innerText = "Select This Hizb";
+        selectHizbButton.id = "selectHizbButton";
+        selectHizbButton.onclick = () => selectHizb(currentHizbNumber);
+        
+        buttonsContainer.appendChild(backButton);
+        buttonsContainer.appendChild(selectHizbButton);
+        
+        document.body.appendChild(buttonsContainer);
+        
+        // Disable button if the Hizb is already selected
+        db.collection("selectedHizbs").doc(currentHizbNumber.toString()).get().then((doc) => {
+            if (doc.exists) {
+                selectHizbButton.disabled = true;
+            }
+        });
+
+
     </script>
 </head>
 <body>
