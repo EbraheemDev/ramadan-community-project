@@ -11,10 +11,8 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
+        
+        // Firebase Configuration
         const firebaseConfig = {
           apiKey: "AIzaSyBMtxNHg_TLxV2-BrB14O66SmybPuVt8B0",
           authDomain: "ramadanhizbproject-35942.firebaseapp.com",
@@ -23,63 +21,60 @@
           messagingSenderId: "1013861517674",
           appId: "1:1013861517674:web:fec09cfcd9e7f92b797d13"
         };
-      
+        
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-    
-        // Function to handle Hizb selection
+        
+        // Update progress bar
         async function updateProgressBar() {
-            const querySnapshot = await getDocs(collection(db, "hizbSelections"));
+            const querySnapshot = await getDocs(collection(db, "hizbtext"));
             let selectedCount = querySnapshot.size;
             let percentage = (selectedCount / 60) * 100;
             document.getElementById("progress-bar").style.width = percentage + "%";
             document.getElementById("progress-bar").innerText = Math.round(percentage) + "%";
         }
-
+        
+        // Select a Hizb
         async function selectHizb(hizbNumber) {
-            const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
+            const hizbRef = doc(db, "hizbtext", `hizb${hizbNumber}`);
             const hizbSnap = await getDoc(hizbRef);
-
+        
             if (hizbSnap.exists()) {
                 alert(`Hizb ${hizbNumber} has already been taken!`);
                 return;
             }
-
-            // Mark the Hizb as selected in Firebase
+        
             await setDoc(hizbRef, { selected: true });
-
+        
             // Update UI
             const button = document.querySelector(`button[data-hizb="${hizbNumber}"]`);
             button.classList.add("selected");
-            button.innerText = `Hizb ${hizbNumber} `;
-
+            button.innerText = `Hizb ${hizbNumber} ✅`;
+        
             updateProgressBar();
-
-            // Show selected Hizb
-            let selectedHizbItem = document.createElement("p");
-            selectedHizbItem.innerText = `You selected Hizb ${hizbNumber}`;
-            document.getElementById("selected-hizbs").appendChild(selectedHizbItem);
         }
-
+        
         // Generate Hizb Buttons Dynamically
-        document.addEventListener("DOMContentLoaded", async function() {
+        document.addEventListener("DOMContentLoaded", async function () {
             const hizbGrid = document.querySelector(".hizb-grid");
-
+        
             for (let i = 1; i <= 60; i++) {
                 let button = document.createElement("button");
                 button.innerText = `Hizb ${i}`;
                 button.setAttribute("data-hizb", i);
+        
                 button.addEventListener("click", () => {
                     window.location.href = `hizb.html?hizb=${i}`;
                 });
+        
                 hizbGrid.appendChild(button);
             }
-
+        
             updateProgressBar();
-
-            // Load already selected Hizbs
-            const querySnapshot = await getDocs(collection(db, "selectedHizbs"));
+        
+            // Mark already selected Hizbs
+            const querySnapshot = await getDocs(collection(db, "hizbtext"));
             querySnapshot.forEach((doc) => {
                 const hizbNumber = doc.id.replace("hizb", "");
                 const button = document.querySelector(`button[data-hizb="${hizbNumber}"]`);
