@@ -283,57 +283,55 @@ header {
 
 @import url('https://fonts.googleapis.com/css2?family=Amiri&family=Noto+Naskh+Arabic&display=swap');
 
+/* General Page Styles */
 body {
-    font-family: 'Amiri', 'Noto Naskh Arabic', serif;
-    background-color: #f9f6f1;
+    font-family: 'Noto Naskh Arabic', serif;
+    background: #fdfdfd;
     color: #333;
     text-align: center;
-    margin: 0;
-    padding: 20px;
+    padding: 15px;
 }
 
-h1 {
-    font-size: 28px;
-    color: #2c3e50;
-    margin-bottom: 10px;
-}
-
+/* Hizb Container */
 #hizb-text {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: 600px;
+    max-width: 95%;
     margin: 20px auto;
 }
 
+/* Individual Ayah Box */
 .ayah-box {
     background: #f8f8f8;
     border: 1px solid #ddd;
-    padding: 10px;
-    margin: 5px 0;
+    padding: 12px;
+    margin: 8px 0;
     width: 100%;
+    max-width: 500px;
     text-align: right;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 1.8;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
 }
 
-a {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 15px;
-    font-size: 18px;
-    text-decoration: none;
-    background: #3498db;
-    color: white;
-    border-radius: 5px;
-    transition: 0.3s;
+/* Highlight Ayah Number */
+.ayah-number {
+    color: #d4a017;
+    font-weight: bold;
+    margin-right: 5px;
 }
 
-a:hover {
-    background: #217dbb;
+/* Mobile-Friendly Adjustments */
+@media (max-width: 600px) {
+    .ayah-box {
+        font-size: 18px;
+        padding: 15px;
+        line-height: 2;
+    }
 }
 
 
