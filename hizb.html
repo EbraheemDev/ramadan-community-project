@@ -38,7 +38,7 @@
     
             try {
                 // Fetch Qur'anic text from Firebase
-                const docRef = doc(db, "hizbtext", `hizb${hizbNumber}`); // FIXED: Correct document reference
+                const docRef = doc(db, "hizbtext", hizbNumber); // FIXED: Correct document reference
                 const docSnap = await getDoc(docRef);
     
                 if (docSnap.exists()) {
@@ -117,11 +117,94 @@
     </script>
 </head>
 <body>
-
     <h1 id="hizb-title">Hizb</h1>
     <p id="hizb-text">Loading...</p>
 
     <a href="index.html">⬅ Back to Home</a>
+
+    <!-- NEW: Select Hizb Button -->
+    <button id="selectHizbButton">Select This Hizb</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBMtxNHg_TLxV2-BrB14O66SmybPuVt8B0",
+            authDomain: "ramadanhizbproject-35942.firebaseapp.com",
+            projectId: "ramadanhizbproject-35942",
+            storageBucket: "ramadanhizbproject-35942.appspot.com",
+            messagingSenderId: "1013861517674",
+            appId: "1:1013861517674:web:fec09cfcd9e7f92b797d13"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            // Get Hizb number from URL
+            const params = new URLSearchParams(window.location.search);
+            const hizbNumber = params.get("hizb");
+
+            if (!hizbNumber) {
+                document.getElementById("hizb-text").innerText = "No Hizb selected.";
+                return;
+            }
+
+            // Update title
+            document.getElementById("hizb-title").innerText = `Hizb ${hizbNumber}`;
+
+            try {
+                // Fetch Qur'anic text from Firebase
+                const docRef = doc(db, "hizbtext", `hizb${hizbNumber}`);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    let text = docSnap.data().text;
+                
+                    // Display the Qur'anic text
+                    document.getElementById("hizb-text").innerText = text;
+                } else {
+                    document.getElementById("hizb-text").innerText = "Hizb text not found.";
+                }
+            } catch (error) {
+                console.error("Error fetching document:", error);
+                document.getElementById("hizb-text").innerText = "Error loading Hizb text.";
+            }
+
+            // Function to select Hizb
+            async function selectHizb() {
+                const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
+
+                const hizbSnap = await getDoc(hizbRef);
+                if (hizbSnap.exists()) {
+                    alert("This Hizb has already been selected.");
+                    return;
+                }
+
+                try {
+                    await setDoc(hizbRef, { selected: true });
+                    alert("Hizb successfully selected!");
+                    document.getElementById("selectHizbButton").disabled = true;
+                } catch (error) {
+                    console.error("Error selecting Hizb:", error);
+                }
+            }
+
+            // Attach event listener to the button
+            document.getElementById("selectHizbButton").addEventListener("click", selectHizb);
+
+            // Disable button if the Hizb is already selected
+            const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
+            const hizbSnap = await getDoc(hizbRef);
+
+            if (hizbSnap.exists()) {
+                document.getElementById("selectHizbButton").disabled = true;
+            }
+        });
+    </script>
 
 </body>
 </html>
