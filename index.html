@@ -28,7 +28,7 @@
         
         // Update progress bar
         async function updateProgressBar() {
-            const querySnapshot = await getDocs(collection(db, "hizbtext"));
+            const querySnapshot = await getDocs(collection(db, "hizbSelections"));
             let selectedCount = querySnapshot.size;
             let percentage = (selectedCount / 60) * 100;
             document.getElementById("progress-bar").style.width = percentage + "%";
@@ -37,7 +37,7 @@
         
         // Select a Hizb
         async function selectHizb(hizbNumber) {
-            const hizbRef = doc(db, "hizbtext", `hizb${hizbNumber}`);
+            const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
             const hizbSnap = await getDoc(hizbRef);
         
             if (hizbSnap.exists()) {
