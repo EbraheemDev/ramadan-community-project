@@ -100,7 +100,7 @@
             const selectHizbButton = document.createElement("button");
             selectHizbButton.innerText = "Select This Hizb";
             selectHizbButton.id = "selectHizbButton";
-            selectHizbButton.onclick = () => selectHizb(hizbNumber); // FIXED: Using correct variable
+            selectHizbButton.onclick = () => selectHizb(`hizb${hizbNumber}`); // FIXED: Using correct variable
     
             buttonsContainer.appendChild(backButton);
             buttonsContainer.appendChild(selectHizbButton);
