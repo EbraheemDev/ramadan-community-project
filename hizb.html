@@ -68,7 +68,7 @@
             }
     
             // Function to select Hizb
-            async function selectHizb(hizbNumber) {
+            async function selectHizb(`hizb${hizbNumber}`) {
                 const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
     
                 const hizbSnap = await getDoc(hizbRef);
