@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="styles.css">
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
-
+        import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+    
         // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyBMtxNHg_TLxV2-BrB14O66SmybPuVt8B0",
@@ -18,29 +18,29 @@
             messagingSenderId: "1013861517674",
             appId: "1:1013861517674:web:fec09cfcd9e7f92b797d13"
         };
-
+    
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
+    
         document.addEventListener("DOMContentLoaded", async function () {
             // Get Hizb number from URL
             const params = new URLSearchParams(window.location.search);
             const hizbNumber = params.get("hizb");
-
+    
             if (!hizbNumber) {
                 document.getElementById("hizb-text").innerText = "No Hizb selected.";
                 return;
             }
-
+    
             // Update title
             document.getElementById("hizb-title").innerText = `Hizb ${hizbNumber}`;
-
+    
             try {
                 // Fetch Qur'anic text from Firebase
-                const docRef = doc(db, "hizbtext", hizbNumber); // FIXED HERE
+                const docRef = doc(db, "hizbtext", `hizb${hizbNumber}`); // FIXED: Correct document reference
                 const docSnap = await getDoc(docRef);
-
+    
                 if (docSnap.exists()) {
                     let text = docSnap.data().text;
                 
@@ -66,55 +66,54 @@
                 console.error("Error fetching document:", error);
                 document.getElementById("hizb-text").innerText = "Error loading Hizb text.";
             }
-        });
-        // Assuming Firebase is already initialized
-
-        // Function to select Hizb from the Qur'anic text page
-        function selectHizb(hizbNumber) {
-            const hizbRef = firebase.firestore().collection("selectedHizbs").doc(hizbNumber.toString());
-        
-            hizbRef.get().then((doc) => {
-                if (doc.exists) {
+    
+            // Function to select Hizb
+            async function selectHizb(hizbNumber) {
+                const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
+    
+                const hizbSnap = await getDoc(hizbRef);
+                if (hizbSnap.exists()) {
                     alert("This Hizb has already been selected.");
-                } else {
-                    hizbRef.set({ selected: true })
-                        .then(() => {
-                            alert("Hizb successfully selected!");
-                            document.getElementById("selectHizbButton").disabled = true;
-                        })
-                        .catch(error => console.error("Error selecting Hizb: ", error));
+                    return;
                 }
-            });
-        }
-        
-        // HTML for the Qur'anic text page buttons
-        const buttonsContainer = document.createElement("div");
-        buttonsContainer.style.display = "flex";
-        buttonsContainer.style.justifyContent = "center";
-        buttonsContainer.style.gap = "10px";
-        buttonsContainer.style.marginTop = "20px";
-        
-        const backButton = document.createElement("button");
-        backButton.innerText = "Back to Home";
-        backButton.onclick = () => window.location.href = "index.html";
-        
-        const selectHizbButton = document.createElement("button");
-        selectHizbButton.innerText = "Select This Hizb";
-        selectHizbButton.id = "selectHizbButton";
-        selectHizbButton.onclick = () => selectHizb(currentHizbNumber);
-        
-        buttonsContainer.appendChild(backButton);
-        buttonsContainer.appendChild(selectHizbButton);
-        
-        document.body.appendChild(buttonsContainer);
-        
-        // Disable button if the Hizb is already selected
-        firebase.firestore().collection("selectedHizbs").doc(currentHizbNumber.toString()).get().then((doc) => {
-            if (doc.exists) {
+    
+                try {
+                    await setDoc(hizbRef, { selected: true });
+                    alert("Hizb successfully selected!");
+                    document.getElementById("selectHizbButton").disabled = true;
+                } catch (error) {
+                    console.error("Error selecting Hizb:", error);
+                }
+            }
+    
+            // Create Buttons
+            const buttonsContainer = document.createElement("div");
+            buttonsContainer.style.display = "flex";
+            buttonsContainer.style.justifyContent = "center";
+            buttonsContainer.style.gap = "10px";
+            buttonsContainer.style.marginTop = "20px";
+    
+            const backButton = document.createElement("button");
+            backButton.innerText = "Back to Home";
+            backButton.onclick = () => window.location.href = "index.html";
+    
+            const selectHizbButton = document.createElement("button");
+            selectHizbButton.innerText = "Select This Hizb";
+            selectHizbButton.id = "selectHizbButton";
+            selectHizbButton.onclick = () => selectHizb(hizbNumber); // FIXED: Using correct variable
+    
+            buttonsContainer.appendChild(backButton);
+            buttonsContainer.appendChild(selectHizbButton);
+            document.body.appendChild(buttonsContainer);
+    
+            // Disable button if the Hizb is already selected
+            const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
+            const hizbSnap = await getDoc(hizbRef);
+    
+            if (hizbSnap.exists()) {
                 selectHizbButton.disabled = true;
             }
         });
-
     </script>
 </head>
 <body>
