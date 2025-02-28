@@ -88,31 +88,39 @@
     
             // Create Buttons
             const buttonsContainer = document.createElement("div");
-            buttonsContainer.style.display = "flex";
-            buttonsContainer.style.justifyContent = "center";
-            buttonsContainer.style.gap = "10px";
-            buttonsContainer.style.marginTop = "20px";
-    
+            buttonsContainer.classList.add("buttons-container");
+            
             const backButton = document.createElement("button");
-            backButton.innerText = "Back to Home";
+            backButton.innerText = "⬅ Back to Home";
+            backButton.id = "backButton";
+            backButton.classList.add("button");
             backButton.onclick = () => window.location.href = "index.html";
-    
+            
             const selectHizbButton = document.createElement("button");
             selectHizbButton.innerText = "Select This Hizb";
             selectHizbButton.id = "selectHizbButton";
-            selectHizbButton.onclick = () => selectHizb(hizbNumber); // FIXED: Using correct variable
-    
+            selectHizbButton.classList.add("button");
+            selectHizbButton.onclick = async () => {
+                await selectHizb(`hizb${hizbNumber}`);
+                selectHizbButton.classList.add("selected"); // Change color
+                selectHizbButton.innerText = "Hizb Selected ✅";
+                selectHizbButton.disabled = true; // Disable button
+            };
+            
+            // Check if the Hizb is already selected when page loads
+            firebase.firestore().collection("hizbSelections").doc(`hizb${hizbNumber}`).get().then((doc) => {
+                if (doc.exists) {
+                    selectHizbButton.classList.add("selected");
+                    selectHizbButton.innerText = "Hizb Selected ✅";
+                    selectHizbButton.disabled = true;
+                }
+            });
+            
             buttonsContainer.appendChild(backButton);
             buttonsContainer.appendChild(selectHizbButton);
+            
             document.body.appendChild(buttonsContainer);
-    
-            // Disable button if the Hizb is already selected
-            const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
-            const hizbSnap = await getDoc(hizbRef);
-    
-            if (hizbSnap.exists()) {
-                selectHizbButton.disabled = true;
-            }
+            
         });
     </script>
 </head>
