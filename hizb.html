@@ -88,23 +88,23 @@
     
             // Create the buttons inside the main content
             const buttonsContainer = document.createElement("div");
-            buttonsContainer.style.display = "flex";
-            buttonsContainer.style.justifyContent = "center";
-            buttonsContainer.style.gap = "10px";
-            buttonsContainer.style.marginTop = "20px";
-    
-            const backButton = document.createElement("button");
-            backButton.innerText = "Back to Home";
-            backButton.onclick = () => window.location.href = "index.html";
-    
-            const selectHizbButton = document.createElement("button");
-            selectHizbButton.innerText = "Select This Hizb";
-            selectHizbButton.id = "selectHizbButton";
-            selectHizbButton.onclick = () => selectHizb(hizbNumber); // FIXED: Using correct variable
-    
-            buttonsContainer.appendChild(backButton);
-            buttonsContainer.appendChild(selectHizbButton);
-            document.body.appendChild(buttonsContainer);
+                buttonsContainer.style.display = "flex";
+                buttonsContainer.style.justifyContent = "center";
+                buttonsContainer.style.gap = "10px";
+                buttonsContainer.style.marginTop = "20px";
+        
+                const backButton = document.createElement("button");
+                backButton.innerText = "Back to Home";
+                backButton.onclick = () => window.location.href = "index.html";
+        
+                const selectHizbButton = document.createElement("button");
+                selectHizbButton.innerText = "Select This Hizb";
+                selectHizbButton.id = "selectHizbButton";
+                selectHizbButton.onclick = () => selectHizb(hizbNumber); // FIXED: Using correct variable
+        
+                buttonsContainer.appendChild(backButton);
+                buttonsContainer.appendChild(selectHizbButton);
+                document.body.appendChild(buttonsContainer);
     
             // Disable button if the Hizb is already selected
             const hizbRef = doc(db, "hizbSelections", hizb${hizbNumber});
