@@ -105,6 +105,10 @@
                 selectHizbButton.classList.add("selected"); // Change color
                 selectHizbButton.innerText = "Hizb Selected ✅";
                 selectHizbButton.disabled = true; // Disable button
+
+            buttonsContainer.appendChild(backButton);
+            buttonsContainer.appendChild(selectHizbButton);
+            document.body.appendChild(buttonsContainer);
             };
             
             // Check if the Hizb is already selected when page loads
@@ -115,12 +119,7 @@
                     selectHizbButton.disabled = true;
                 }
             });
-            
-            buttonsContainer.appendChild(backButton);
-            buttonsContainer.appendChild(selectHizbButton);
-            
-            document.body.appendChild(buttonsContainer);
-            
+        
         });
     </script>
 </head>
@@ -130,3 +129,5 @@
 
 </body>
 </html>
+
+
