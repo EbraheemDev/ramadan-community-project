@@ -87,31 +87,36 @@
             }
     
             // Create the buttons inside the main content
+            // **Create Buttons and Append to Hizb Container**
             const buttonsContainer = document.createElement("div");
-                buttonsContainer.style.display = "flex";
-                buttonsContainer.style.justifyContent = "center";
-                buttonsContainer.style.gap = "10px";
-                buttonsContainer.style.marginTop = "20px";
+            buttonsContainer.style.display = "flex";
+            buttonsContainer.style.justifyContent = "center";
+            buttonsContainer.style.gap = "10px";
+            buttonsContainer.style.marginTop = "20px";
         
-                const backButton = document.createElement("button");
-                backButton.innerText = "Back to Home";
-                backButton.onclick = () => window.location.href = "index.html";
+            const backButton = document.createElement("button");
+            backButton.innerText = "Back to Home";
+            backButton.classList.add("button-style"); 
+            backButton.onclick = () => window.location.href = "index.html";
         
-                const selectHizbButton = document.createElement("button");
-                selectHizbButton.innerText = "Select This Hizb";
-                selectHizbButton.id = "selectHizbButton";
-                selectHizbButton.onclick = () => selectHizb(hizbNumber); // FIXED: Using correct variable
+            const selectHizbButton = document.createElement("button");
+            selectHizbButton.innerText = "Select This Hizb";
+            selectHizbButton.id = "selectHizbButton";
+            selectHizbButton.classList.add("button-style"); 
+            selectHizbButton.onclick = () => selectHizb(hizbNumber);
         
-                buttonsContainer.appendChild(backButton);
-                buttonsContainer.appendChild(selectHizbButton);
-                document.body.appendChild(buttonsContainer);
-    
-            // Disable button if the Hizb is already selected
-            const hizbRef = doc(db, "hizbSelections", hizb${hizbNumber});
+            buttonsContainer.appendChild(backButton);
+            buttonsContainer.appendChild(selectHizbButton);
+            
+            document.getElementById("hizb-text").appendChild(buttonsContainer);
+        
+            // **Disable button if Hizb is already selected**
+            const hizbRef = doc(db, "hizbSelections", `hizb${hizbNumber}`);
             const hizbSnap = await getDoc(hizbRef);
-    
+        
             if (hizbSnap.exists()) {
                 selectHizbButton.disabled = true;
+                selectHizbButton.style.backgroundColor = "gray"; // Change color when already selected
             }
         });
     </script>
