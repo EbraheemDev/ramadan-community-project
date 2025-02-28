@@ -355,6 +355,30 @@ body {
     cursor: not-allowed;
 }
 
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .hizb-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 buttons per row */
+        gap: 6px;
+    }
+    
+    .hizb-button {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hizb-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 buttons per row on small screens */
+        gap: 5px;
+    }
+    
+    .hizb-button {
+        font-size: 10px;
+        padding: 6px;
+    }
+}
 
 
 
