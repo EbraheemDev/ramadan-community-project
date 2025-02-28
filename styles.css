@@ -334,32 +334,26 @@ body {
     }
 }
 
-.button {
-    background-color: #D4AF37; /* Gold */
-    color: white;
-    border: none;
+.button-style {
     padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 8px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    background-color: #d4af37; /* Gold */
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
-.button:hover {
-    background-color: #E6C36B; /* Light yellow */
+.button-style:hover {
+    background-color: #b8860b; /* Light brown */
 }
 
-.button:active {
-    background-color: #C29A30; /* Light brown */
-}
-
-.selected {
-    background-color: #777 !important; /* Gray when selected */
-    color: #fff;
+.button-style:disabled {
+    background-color: gray;
     cursor: not-allowed;
 }
-
 
 
 
