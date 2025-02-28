@@ -334,6 +334,40 @@ body {
     }
 }
 
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button {
+    background-color: #f5b800; /* Match Hizb button color */
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+}
+
+.button:hover {
+    background-color: #d99a00;
+    transform: scale(1.05);
+}
+
+#backButton {
+    background-color: #ddd;
+    color: #333;
+}
+
+#backButton:hover {
+    background-color: #bbb;
+}
+
 
 
 
